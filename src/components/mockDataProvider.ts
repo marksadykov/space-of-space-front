@@ -1,8 +1,6 @@
 import fakeDataProvider from 'ra-data-fakerest';
-import { TextInput } from 'react-admin';
-import * as React from 'react';
 
-export const dataProvider = fakeDataProvider({
+export const mockDataProvider = fakeDataProvider({
   cards: [
     {
       id: 0,
