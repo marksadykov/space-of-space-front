@@ -16,10 +16,12 @@ const simpleDataProvider = simpleRestProvider(apiUrl);
 const myGetList = (resource: string, params: GetListParams) => {
   const url = `${apiUrl}/${resource}`;
 
-  return httpClient(url).then(({ headers, json }) => ({
-    data: json,
-    total: 20,
-  }));
+  return httpClient(url).then(({ headers, json }) => {
+    return {
+      data: json.Content,
+      total: 20,
+    };
+  });
 };
 
 const myDataProvider = {
