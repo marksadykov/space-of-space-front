@@ -5,9 +5,9 @@ const CardsList: React.FC = ({ ...props }: any) => {
   return (
     <List {...props}>
       <Datagrid>
-        <TextField source="Header" />
-        <TextField source="Body" />
-        <TextField source="Url" />
+        <TextField source="header" />
+        <TextField source="body" />
+        <TextField source="url" />
         <EditButton />
       </Datagrid>
     </List>

@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { Admin, Resource, fetchUtils, GetListParams } from 'react-admin';
+import {
+  Admin,
+  Resource,
+  fetchUtils,
+  GetListParams,
+  GetOneParams,
+} from 'react-admin';
 import CardsList from '../CardsList';
 import EditCards from '../EditCards';
 import StreamsList from '../StreamsList';
@@ -19,14 +25,24 @@ const myGetList = (resource: string, params: GetListParams) => {
   return httpClient(url).then(({ headers, json }) => {
     return {
       data: json.Content,
-      total: 20,
+      total: json.Content.length,
+    };
+  });
+};
+
+const myGetOne = (resource: string, params: GetOneParams) => {
+  const url = `${apiUrl}/${resource}/${params.id}`;
+
+  return httpClient(url).then(({ headers, json }) => {
+    return {
+      data: json.Content,
     };
   });
 };
 
 const myDataProvider = {
   getList: myGetList,
-  getOne: simpleDataProvider.getOne,
+  getOne: myGetOne,
   getMany: simpleDataProvider.getMany,
   getManyReference: simpleDataProvider.getManyReference,
   create: simpleDataProvider.create,
@@ -40,8 +56,8 @@ const AdminPanel: React.FC = () => {
   return (
     <Admin dataProvider={myDataProvider}>
       <Resource name="cards" list={CardsList} edit={EditCards} />
-      <Resource name="streams" list={StreamsList} edit={EditStreams} />
-      <Resource name="news" list={NewsList} edit={EditNews} />
+      {/*<Resource name="streams" list={StreamsList} edit={EditStreams} />*/}
+      {/*<Resource name="news" list={NewsList} edit={EditNews} />*/}
     </Admin>
   );
 };
