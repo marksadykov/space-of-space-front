@@ -56,8 +56,8 @@ const AdminPanel: React.FC = () => {
   return (
     <Admin dataProvider={myDataProvider}>
       <Resource name="cards" list={CardsList} edit={EditCards} />
-      {/*<Resource name="streams" list={StreamsList} edit={EditStreams} />*/}
-      {/*<Resource name="news" list={NewsList} edit={EditNews} />*/}
+      <Resource name="streams" list={StreamsList} edit={EditStreams} />
+      <Resource name="news" list={NewsList} edit={EditNews} />
     </Admin>
   );
 };
