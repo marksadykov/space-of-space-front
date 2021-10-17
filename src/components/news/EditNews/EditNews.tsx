@@ -1,21 +1,11 @@
 import * as React from 'react';
-import {
-  Edit,
-  SimpleForm,
-  ReferenceInput,
-  SelectInput,
-  TextInput,
-  TextField,
-} from 'react-admin';
+import { Edit, SimpleForm, TextInput } from 'react-admin';
 
 const EditNews: React.FC = ({ ...props }: any) => {
   return (
     <Edit {...props}>
       <SimpleForm>
-        <ReferenceInput source="id" reference="cards">
-          <SelectInput optionText="id" />
-        </ReferenceInput>
-        <TextInput source="id" />
+        <TextInput source="id" disabled />
         <TextInput source="imageUrl" />
         <TextInput source="newsSite" />
         <TextInput source="publishedAt" />

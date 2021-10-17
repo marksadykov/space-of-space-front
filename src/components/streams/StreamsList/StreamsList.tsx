@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { List, Datagrid, TextField, EditButton } from 'react-admin';
 
-const CardsList: React.FC = ({ ...props }: any) => {
+const StreamsList: React.FC = ({ ...props }: any) => {
   return (
     <List {...props}>
       <Datagrid>
-        <TextField source="header" />
-        <TextField source="body" />
-        <TextField source="url" />
+        <TextField source="Launch" />
+        <TextField source="Details" />
+        <TextField source="Youtube" />
         <EditButton />
       </Datagrid>
     </List>
   );
 };
 
-export default CardsList;
+export default StreamsList;

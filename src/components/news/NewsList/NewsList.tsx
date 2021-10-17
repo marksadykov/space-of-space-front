@@ -5,12 +5,12 @@ const NewsList: React.FC = ({ ...props }: any) => {
   return (
     <List {...props}>
       <Datagrid>
-        <TextField source="imageUrl" />
-        <TextField source="newsSite" />
-        <TextField source="publishedAt" />
+        <TextField source="image_url" />
+        <TextField source="news_site" />
+        <TextField source="published_at" />
         <TextField source="summary" />
         <TextField source="title" />
-        <TextField source="updatedAt" />
+        <TextField source="updated_at" />
         <TextField source="url" />
         <EditButton />
       </Datagrid>
