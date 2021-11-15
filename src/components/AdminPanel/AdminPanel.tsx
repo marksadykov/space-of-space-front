@@ -10,25 +10,49 @@ import EditNews from '../news/EditNews';
 import CreateStreams from '../streams/CreateStreams';
 import UsersList from '../users/UsersList';
 import EditUsers from '../users/EditUsers';
+import CreateNews from '../news/CreateNews';
+import ArmodelsList from '../armodels/ArmodelsList';
+import CreateArmodels from '../armodels/CreateArmodels';
 import { dataProvider } from '../data/dataProvider';
+import EditArmodels from '../armodels/EditArmodels';
+import ArcategoryList from '../arcategory/ArcategoryList';
+import CreateArcategory from '../arcategory/CreateArcategory';
+import EditArcategory from '../arcategory/EditArcategory';
 
 const AdminPanel: React.FC = () => {
   return (
     <Admin dataProvider={dataProvider}>
       <Resource
-        name="cards"
-        list={CardsList}
-        edit={EditCards}
-        create={CreateCards}
-      />
-      <Resource
-        name="streams"
+        name="stream"
         list={StreamsList}
         edit={EditStreams}
         create={CreateStreams}
       />
+      {/*<Resource*/}
+      {/*  name="cards"*/}
+      {/*  list={ArcategoryList}*/}
+      {/*  edit={EditArcategory}*/}
+      {/*  create={CreateArcategory}*/}
+      {/*/>*/}
+      <Resource
+        name="new"
+        list={NewsList}
+        create={CreateNews}
+        edit={EditNews}
+      />
+      <Resource
+        name="armodels"
+        list={ArmodelsList}
+        create={CreateArmodels}
+        edit={EditArmodels}
+      />
+      <Resource
+        name="arcategory"
+        list={ArcategoryList}
+        create={CreateArcategory}
+        edit={EditArcategory}
+      />
       <Resource name="users" list={UsersList} edit={EditUsers} />
-      <Resource name="news" list={NewsList} edit={EditNews} />
     </Admin>
   );
 };

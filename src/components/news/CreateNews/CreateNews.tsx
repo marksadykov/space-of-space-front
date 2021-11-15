@@ -1,17 +1,16 @@
 import * as React from 'react';
 import {
-  Edit,
   SimpleForm,
   TextInput,
-  DateInput,
+  Create,
   BooleanInput,
+  DateInput,
 } from 'react-admin';
 
-const EditNews: React.FC = ({ ...props }: any) => {
+const CreateNews: React.FC = ({ ...props }: any) => {
   return (
-    <Edit {...props}>
+    <Create {...props}>
       <SimpleForm>
-        <TextInput source="id" disabled />
         <TextInput source="imageUrl" />
         <TextInput source="newsSite" />
         <TextInput source="summary" />
@@ -21,8 +20,8 @@ const EditNews: React.FC = ({ ...props }: any) => {
         <TextInput source="url" />
         <BooleanInput source="featured" />
       </SimpleForm>
-    </Edit>
+    </Create>
   );
 };
 
-export default EditNews;
+export default CreateNews;

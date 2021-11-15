@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { List, Datagrid, TextField, EditButton } from 'react-admin';
+import { List, Datagrid, TextField, EditButton, DateField } from 'react-admin';
 
 const StreamsList: React.FC = ({ ...props }: any) => {
   return (
-    <List {...props}>
+    <List {...props} pagination={null}>
       <Datagrid>
-        <TextField source="Launch" />
-        <TextField source="Details" />
-        <TextField source="Youtube" />
+        <TextField source="category" />
+        <TextField source="description" />
+        <TextField source="title" />
+        <TextField source="youtube_id" />
+        <DateField source="published_at" />
         <EditButton />
       </Datagrid>
     </List>

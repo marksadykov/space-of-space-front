@@ -1,17 +1,27 @@
 import simpleRestProvider from 'ra-data-simple-rest';
 import { apiUrl } from '../config';
-import { getList, getOne } from './methods';
+import {
+  getListMethod,
+  getOneMethod,
+  updateMethod,
+  createMethod,
+  deleteMethod,
+  getManyReferenceMethod,
+  updateManyMethod,
+  deleteManyMethod,
+} from './methods';
 
 const simpleDataProvider = simpleRestProvider(apiUrl);
 
 export const dataProvider = {
-  getList: getList,
-  getOne: getOne,
-  getMany: simpleDataProvider.getMany,
+  getList: getListMethod,
+  getOne: getOneMethod,
+  create: createMethod,
+  update: updateMethod,
+  delete: deleteMethod,
+  getMany: getManyReferenceMethod,
+  updateMany: updateManyMethod,
+  deleteMany: deleteManyMethod,
+
   getManyReference: simpleDataProvider.getManyReference,
-  create: simpleDataProvider.create,
-  update: simpleDataProvider.update,
-  updateMany: simpleDataProvider.updateMany,
-  delete: simpleDataProvider.delete,
-  deleteMany: simpleDataProvider.deleteMany,
 };
