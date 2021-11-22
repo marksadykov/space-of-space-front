@@ -18,6 +18,9 @@ import EditArmodels from '../armodels/EditArmodels';
 import ArcategoryList from '../arcategory/ArcategoryList';
 import CreateArcategory from '../arcategory/CreateArcategory';
 import EditArcategory from '../arcategory/EditArcategory';
+import QuestionsList from '../questions/QuestionsList';
+import CreateQuestions from '../questions/CreateQuestions';
+import EditQuestions from '../questions/EditQuestions';
 
 const AdminPanel: React.FC = () => {
   return (
@@ -30,9 +33,9 @@ const AdminPanel: React.FC = () => {
       />
       {/*<Resource*/}
       {/*  name="cards"*/}
-      {/*  list={ArcategoryList}*/}
-      {/*  edit={EditArcategory}*/}
-      {/*  create={CreateArcategory}*/}
+      {/*  list={CardsList}*/}
+      {/*  edit={EditCards}*/}
+      {/*  create={CreateCards}*/}
       {/*/>*/}
       <Resource
         name="new"
@@ -53,6 +56,12 @@ const AdminPanel: React.FC = () => {
         edit={EditArcategory}
       />
       <Resource name="users" list={UsersList} edit={EditUsers} />
+      <Resource
+        name="question"
+        list={QuestionsList}
+        create={CreateQuestions}
+        edit={EditQuestions}
+      />
     </Admin>
   );
 };

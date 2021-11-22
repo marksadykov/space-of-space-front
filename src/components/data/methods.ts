@@ -8,11 +8,19 @@ import {
   GetManyParams,
   UpdateManyParams,
   DeleteManyParams,
+  HttpError,
 } from 'react-admin';
 import { apiUrl } from '../config';
 import { stringify } from 'query-string';
 
-const httpClient = fetchUtils.fetchJson;
+const httpClient = (url: string, options: any = {}) => {
+  if (!options.headers) {
+    options.headers = new Headers({ Accept: 'application/json' });
+  }
+  const currentAccessToken = localStorage.getItem('Access-Token') || '';
+  options.headers.set('Access-Token', currentAccessToken);
+  return fetchUtils.fetchJson(url, options);
+};
 
 const resourcePort: Record<string, string> = {
   cards: ':28080',
@@ -21,6 +29,7 @@ const resourcePort: Record<string, string> = {
   new: ':28080',
   arcategory: ':28084',
   armodels: ':28084',
+  question: ':28083',
 };
 
 const getUrlWithPort = (url: string, resource: string): string =>
@@ -33,17 +42,25 @@ const getUrl = (resource: string): string => {
 
 export const getListMethod = (resource: string, params: GetListParams) => {
   const url = getUrl(resource);
-  return httpClient(url).then(({ json }) => {
-    return {
-      data: json.Content,
-      total: json.Content.length,
-    };
-  });
+  return httpClient(url).then(
+    ({ json }) => {
+      return {
+        data: json.Content,
+        total: json.Content.length,
+      };
+    },
+    ({ message, status, body }) =>
+      Promise.reject(new HttpError(message, status, body))
+  );
 };
 
 export const getOneMethod = (resource: string, params: GetOneParams) => {
   const url = `${apiUrl}${resourcePort[resource]}/${resource}/${params.id}`;
-  return httpClient(url).then(({ json }) => ({ data: json.Content }));
+  return httpClient(url).then(
+    ({ json }) => ({ data: json.Content }),
+    ({ message, status, body }) =>
+      Promise.reject(new HttpError(message, status, body))
+  );
 };
 
 export const updateMethod = (resource: string, params: UpdateParams) => {
@@ -51,7 +68,11 @@ export const updateMethod = (resource: string, params: UpdateParams) => {
   return httpClient(url, {
     method: 'PUT',
     body: JSON.stringify(params.data),
-  }).then(({ json }) => ({ data: json.Content }));
+  }).then(
+    ({ json }) => ({ data: json.Content }),
+    ({ message, status, body }) =>
+      Promise.reject(new HttpError(message, status, body))
+  );
 };
 
 export const createMethod = (resource: string, params: CreateParams) => {
@@ -59,14 +80,22 @@ export const createMethod = (resource: string, params: CreateParams) => {
   return httpClient(url, {
     method: 'POST',
     body: JSON.stringify(params.data),
-  }).then(({ json }) => ({ data: json.Content }));
+  }).then(
+    ({ json }) => ({ data: json.Content }),
+    ({ message, status, body }) =>
+      Promise.reject(new HttpError(message, status, body))
+  );
 };
 
 export const deleteMethod = (resource: string, params: DeleteParams) => {
   const url = `${apiUrl}${resourcePort[resource]}/${resource}/${params.id}`;
   return httpClient(url, {
     method: 'DELETE',
-  }).then(({ json }) => ({ data: json.Content }));
+  }).then(
+    ({ json }) => ({ data: json.Content }),
+    ({ message, status, body }) =>
+      Promise.reject(new HttpError(message, status, body))
+  );
 };
 
 export const getManyReferenceMethod = (
@@ -79,7 +108,11 @@ export const getManyReferenceMethod = (
   const url = `${apiUrl}${resourcePort[resource]}/${resource}?${stringify(
     query
   )}`;
-  return httpClient(url).then(({ json }) => ({ data: json }));
+  return httpClient(url).then(
+    ({ json }) => ({ data: json }),
+    ({ message, status, body }) =>
+      Promise.reject(new HttpError(message, status, body))
+  );
 };
 
 export const updateManyMethod = (
@@ -95,7 +128,11 @@ export const updateManyMethod = (
       method: 'PUT',
       body: JSON.stringify(params.data),
     }
-  ).then(({ json }) => ({ data: json }));
+  ).then(
+    ({ json }) => ({ data: json }),
+    ({ message, status, body }) =>
+      Promise.reject(new HttpError(message, status, body))
+  );
 };
 
 export const deleteManyMethod = (
@@ -110,5 +147,9 @@ export const deleteManyMethod = (
     {
       method: 'DELETE',
     }
-  ).then(({ json }) => ({ data: json }));
+  ).then(
+    ({ json }) => ({ data: json }),
+    ({ message, status, body }) =>
+      Promise.reject(new HttpError(message, status, body))
+  );
 };

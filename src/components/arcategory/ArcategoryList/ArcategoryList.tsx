@@ -5,7 +5,6 @@ import {
   TextField,
   EditButton,
   NumberField,
-  BooleanField,
 } from 'react-admin';
 
 const ArcategoryList: React.FC = ({ ...props }: any) => {
