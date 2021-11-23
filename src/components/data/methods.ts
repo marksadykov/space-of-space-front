@@ -1,14 +1,14 @@
 import {
+  CreateParams,
+  DeleteManyParams,
+  DeleteParams,
   fetchUtils,
   GetListParams,
-  GetOneParams,
-  CreateParams,
-  UpdateParams,
-  DeleteParams,
   GetManyParams,
-  UpdateManyParams,
-  DeleteManyParams,
+  GetOneParams,
   HttpError,
+  UpdateManyParams,
+  UpdateParams,
 } from 'react-admin';
 import { apiUrl } from '../config';
 import { stringify } from 'query-string';
@@ -17,26 +17,50 @@ const httpClient = (url: string, options: any = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: 'application/json' });
   }
-  const currentAccessToken = localStorage.getItem('Access-Token') || '';
-  options.headers.set('Access-Token', currentAccessToken);
+  options.headers['Access-Token'] = localStorage.getItem('Access-Token') || '';
   return fetchUtils.fetchJson(url, options);
 };
 
-const resourcePort: Record<string, string> = {
-  cards: ':28080',
-  stream: ':28080',
-  users: ':28081',
-  new: ':28080',
-  arcategory: ':28084',
-  armodels: ':28084',
-  question: ':28083',
+// const httpClient = fetchUtils.fetchJson;
+
+// const resourcePort: Record<string, string> = {
+//   cards: localStorage.getItem('proxy') || '',
+//   stream: localStorage.getItem('proxy') || '',
+//   users: ':28081',
+//   new: localStorage.getItem('proxy') || '',
+//   arcategory: ':28084',
+//   armodels: ':28084',
+//   question: ':28083',
+// };
+
+enum Source {
+  cards = 'cards',
+  stream = 'stream',
+  users = 'users',
+  new = 'new',
+  arcategory = 'arcategory',
+  armodels = 'armodels',
+  question = 'question',
+}
+
+const resourcePort = (): Record<Source, string> => ({
+  cards: localStorage.getItem('proxy') || '',
+  stream: localStorage.getItem('proxy') || '',
+  users: localStorage.getItem('users') || '',
+  new: localStorage.getItem('proxy') || '',
+  arcategory: localStorage.getItem('ar') || '',
+  armodels: localStorage.getItem('ar') || '',
+  question: localStorage.getItem('question') || '',
+});
+
+const getUrlWithPort = (url: string, resource: Source): string => {
+  const ports = resourcePort();
+  const port = ports[resource];
+  return `${url}${port}`;
 };
 
-const getUrlWithPort = (url: string, resource: string): string =>
-  `${url}${resourcePort[resource]}`;
-
 const getUrl = (resource: string): string => {
-  const urlWithPort = getUrlWithPort(apiUrl, resource);
+  const urlWithPort = getUrlWithPort(apiUrl, (<any>Source)[resource]);
   return `${urlWithPort}/${resource}`;
 };
 
@@ -55,7 +79,10 @@ export const getListMethod = (resource: string, params: GetListParams) => {
 };
 
 export const getOneMethod = (resource: string, params: GetOneParams) => {
-  const url = `${apiUrl}${resourcePort[resource]}/${resource}/${params.id}`;
+  const ports = resourcePort();
+  // @ts-ignore
+  const port = ports[resource];
+  const url = `${apiUrl}${port}/${resource}/${params.id}`;
   return httpClient(url).then(
     ({ json }) => ({ data: json.Content }),
     ({ message, status, body }) =>
@@ -64,7 +91,10 @@ export const getOneMethod = (resource: string, params: GetOneParams) => {
 };
 
 export const updateMethod = (resource: string, params: UpdateParams) => {
-  const url = `${apiUrl}${resourcePort[resource]}/${resource}/${params.data.id}`;
+  const ports = resourcePort();
+  // @ts-ignore
+  const port = ports[resource];
+  const url = `${apiUrl}${port}/${resource}/${params.data.id}`;
   return httpClient(url, {
     method: 'PUT',
     body: JSON.stringify(params.data),
@@ -76,7 +106,10 @@ export const updateMethod = (resource: string, params: UpdateParams) => {
 };
 
 export const createMethod = (resource: string, params: CreateParams) => {
-  const url = `${apiUrl}${resourcePort[resource]}/${resource}`;
+  const ports = resourcePort();
+  // @ts-ignore
+  const port = ports[resource];
+  const url = `${apiUrl}${port}/${resource}`;
   return httpClient(url, {
     method: 'POST',
     body: JSON.stringify(params.data),
@@ -88,7 +121,10 @@ export const createMethod = (resource: string, params: CreateParams) => {
 };
 
 export const deleteMethod = (resource: string, params: DeleteParams) => {
-  const url = `${apiUrl}${resourcePort[resource]}/${resource}/${params.id}`;
+  const ports = resourcePort();
+  // @ts-ignore
+  const port = ports[resource];
+  const url = `${apiUrl}${port}/${resource}/${params.id}`;
   return httpClient(url, {
     method: 'DELETE',
   }).then(
@@ -102,12 +138,13 @@ export const getManyReferenceMethod = (
   resource: string,
   params: GetManyParams
 ) => {
+  const ports = resourcePort();
+  // @ts-ignore
+  const port = ports[resource];
   const query = {
     filter: JSON.stringify({ ids: params.ids }),
   };
-  const url = `${apiUrl}${resourcePort[resource]}/${resource}?${stringify(
-    query
-  )}`;
+  const url = `${apiUrl}${port}/${resource}?${stringify(query)}`;
   return httpClient(url).then(
     ({ json }) => ({ data: json }),
     ({ message, status, body }) =>
@@ -119,16 +156,16 @@ export const updateManyMethod = (
   resource: string,
   params: UpdateManyParams
 ) => {
+  const ports = resourcePort();
+  // @ts-ignore
+  const port = ports[resource];
   const query = {
     filter: JSON.stringify({ id: params.ids }),
   };
-  return httpClient(
-    `${apiUrl}${resourcePort[resource]}/${resource}?${stringify(query)}`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(params.data),
-    }
-  ).then(
+  return httpClient(`${apiUrl}${port}/${resource}?${stringify(query)}`, {
+    method: 'PUT',
+    body: JSON.stringify(params.data),
+  }).then(
     ({ json }) => ({ data: json }),
     ({ message, status, body }) =>
       Promise.reject(new HttpError(message, status, body))
@@ -139,15 +176,15 @@ export const deleteManyMethod = (
   resource: string,
   params: DeleteManyParams
 ) => {
+  const ports = resourcePort();
+  // @ts-ignore
+  const port = ports[resource];
   const query = {
     filter: JSON.stringify({ id: params.ids }),
   };
-  return httpClient(
-    `${apiUrl}${resourcePort[resource]}/${resource}?${stringify(query)}`,
-    {
-      method: 'DELETE',
-    }
-  ).then(
+  return httpClient(`${apiUrl}${port}/${resource}?${stringify(query)}`, {
+    method: 'DELETE',
+  }).then(
     ({ json }) => ({ data: json }),
     ({ message, status, body }) =>
       Promise.reject(new HttpError(message, status, body))
