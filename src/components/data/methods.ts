@@ -23,15 +23,15 @@ const httpClient = (url: string, options: any = {}) => {
 
 // const httpClient = fetchUtils.fetchJson;
 
-// const resourcePort: Record<string, string> = {
-//   cards: localStorage.getItem('proxy') || '',
-//   stream: localStorage.getItem('proxy') || '',
+// const resourcePort = (): Record<Source, string> => ({
+//   cards: ':28080',
+//   stream: ':28080',
 //   users: ':28081',
-//   new: localStorage.getItem('proxy') || '',
+//   new: ':28080',
 //   arcategory: ':28084',
 //   armodels: ':28084',
 //   question: ':28083',
-// };
+// });
 
 enum Source {
   cards = 'cards',
@@ -72,9 +72,13 @@ export const getListMethod = (resource: string, params: GetListParams) => {
         data: json.Content,
         total: json.Content.length,
       };
-    },
-    ({ message, status, body }) =>
-      Promise.reject(new HttpError(message, status, body))
+    }
+    // error => {
+    //   console.log('error getListMethod', error.error);
+    //   return Promise.reject(
+    //     new HttpError(error.message, error.status, error.body)
+    //   );
+    // }
   );
 };
 
