@@ -8,7 +8,7 @@ RUN npm install
 
 COPY public public
 COPY src src
-RUN npm run-script build --prod
+RUN npm run-script build
 
 FROM nginx:alpine
 
