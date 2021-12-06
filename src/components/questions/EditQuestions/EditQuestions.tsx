@@ -5,6 +5,8 @@ import {
   SimpleForm,
   TextInput,
   ArrayInput,
+  SimpleFormIterator,
+  NumberInput,
 } from 'react-admin';
 
 const EditQuestions: React.FC = ({ ...props }: any) => {
@@ -16,13 +18,17 @@ const EditQuestions: React.FC = ({ ...props }: any) => {
         <AutocompleteInput
           source="category_id"
           choices={[
-            { id: '1', name: 'planets' },
-            { id: '2', name: 'astronauts' },
-            { id: '3', name: 'solar system' },
+            { id: 1, name: 'planets' },
+            { id: 2, name: 'astronauts' },
+            { id: 3, name: 'solar system' },
           ]}
         />
-        <TextInput source="variants" />
-        <TextInput source="correct" />
+        <ArrayInput source="variants">
+          <SimpleFormIterator>
+            <TextInput source="" />
+          </SimpleFormIterator>
+        </ArrayInput>
+        <NumberInput source="correct" />
       </SimpleForm>
     </Edit>
   );

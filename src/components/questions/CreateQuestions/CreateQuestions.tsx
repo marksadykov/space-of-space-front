@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { SimpleForm, TextInput, Create, AutocompleteInput } from 'react-admin';
+import {
+  SimpleForm,
+  TextInput,
+  Create,
+  AutocompleteInput,
+  ArrayInput,
+  SimpleFormIterator,
+  NumberInput,
+} from 'react-admin';
 
 const CreateQuestions: React.FC = ({ ...props }: any) => {
   return (
@@ -9,13 +17,17 @@ const CreateQuestions: React.FC = ({ ...props }: any) => {
         <AutocompleteInput
           source="category_id"
           choices={[
-            { id: '1', name: 'planets' },
-            { id: '2', name: 'astronauts' },
-            { id: '3', name: 'solar system' },
+            { id: 1, name: 'planets' },
+            { id: 2, name: 'astronauts' },
+            { id: 3, name: 'solar system' },
           ]}
         />
-        <TextInput source="variants" />
-        <TextInput source="correct" />
+        <ArrayInput source="variants">
+          <SimpleFormIterator>
+            <TextInput source="" />
+          </SimpleFormIterator>
+        </ArrayInput>
+        <NumberInput source="correct" />
       </SimpleForm>
     </Create>
   );
